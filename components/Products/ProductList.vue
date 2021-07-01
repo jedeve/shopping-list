@@ -1,6 +1,6 @@
 <template>
-    <section>
-        <product-item class="product-list"
+    <section class="product-list">
+        <product-item
         v-for="product in loadedProducts"
         :key="product.id"
         :image="product.image"
@@ -27,6 +27,6 @@ export default {
 
 <style scoped>
 .product-list{
-    margin-bottom: 10px;
+
 }
 </style>

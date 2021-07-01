@@ -8,7 +8,7 @@
         {{ title }}
     </div>
     <div class="product-url">
-        <a :href="url">link</a>
+        <a :href="url">Go to product</a>
     </div>
     <div class="product-price">
         € {{ price }}
@@ -53,64 +53,34 @@ export default {
 </script>
 
 <style scoped>
-.container {
-  display: grid;
-  grid-template-columns: 1.6fr 1.7fr;
-  grid-template-rows: 1.8fr;
-  grid-auto-columns: 1fr;
-  gap: 5px 5px;
-  grid-auto-flow: row;
-  grid-template-areas:
-    "product-image product-data";
-  width: 300px;
-  height: 150px;
-  border: 1px solid black;
-  margin: 5px;
-    text-overflow: ellipsis;
+  .container {
+    display: flex;
+    flex-direction: row;
+    border: 2px solid black;
+    border-radius: 10px;
+    width: auto;
+    padding: 10px;
+    margin: 10px;
+  }
 
-}
+  .product-price {
+    display: flex;
+    font-size: 1.5rem;
+    justify-content: flex-end;
 
-.product-image {
-  justify-self: stretch;
-  align-self: stretch;
-  background-size: contain;
-  grid-area: product-image;
-    border: 1px solid black
-}
+  }
 
-.product-data {
-  display: grid;
-  grid-template-columns: 1fr;
-  grid-template-rows: 1fr 1fr 1fr;
-  gap: 0px 0px;
-  grid-auto-flow: row;
-  grid-template-areas:
-    "product-title"
-    "product-url"
-    "product-price";
-  grid-area: product-data;
-}
+  .product-title {
+    font-size: 1.5rem;
+  }
 
-.product-title {
-  justify-self: start;
-  align-self: start;
-  grid-area: product-title;
-}
+  .product-image {
+    width: 25%;
+    background-size: contain;
+    background-repeat: no-repeat;
+  }
 
-.product-url {
-
-  justify-self: start;
-  align-self: start;
-  grid-area: product-url;
-  text-overflow: ellipsis;
-}
-
-.product-price {
-
-  justify-self: end;
-  align-self: end;
-  grid-area: product-price;
-}
-
-
+  .product-data {
+    flex: 1;
+  }
 </style>

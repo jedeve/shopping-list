@@ -11,7 +11,9 @@ export default {
         onSubmitted(productData) {
             axios.post('https://shopping-list-aa6a9-default-rtdb.europe-west1.firebasedatabase.app/products.json', productData)
             .then(result => console.log(result))
-            .catch(e => console.log(e))
+            .catch(e => console.log(e));
+
+            this.$router.push('/')
         }
     }
 }
