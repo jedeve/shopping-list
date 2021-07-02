@@ -1,28 +1,42 @@
 <template>
   <div class="container">
   <div class="product-image"
+  @click="toProduct"
     :style="{backgroundImage: 'url(' + image + ')'}">
     </div>
   <div class="product-data">
-    <div class="product-title">
+    <div class="product-title" @click="toProduct">
         {{ title }}
     </div>
     <div class="product-url">
-        <a :href="url">Go to product</a>
+        <a :href="url" v-on:click.stop target="_blank">Go to product</a>
     </div>
+    <base-category v-for="cat in categories" :key="cat" @click.native="filterItems(cat)" v-on:click.stop>
+        {{ cat }}
+    </base-category>
+    </div>
+    <div>
     <div class="product-price">
         € {{ price }}
     </div>
-  </div>
-  <!-- <div class="product-category">
-      <p v-for="cat in categories" :key="cat">{{ cat}}</p>
-  </div> -->
+    <div class="remove-button">
+      <button @click="removeItem" v-on:click.stop>
+        Remove
+      </button>
+    </div>
+    </div>
 </div>
 </template>
 
 <script>
+import BaseCategory from '../UI/BaseCategory.vue'
 export default {
+  components: { BaseCategory },
     props: {
+        id: {
+          type: String,
+          required: true
+        },
         image: {
             type: String,
             required: false
@@ -46,7 +60,13 @@ export default {
     },
     methods: {
         toProduct() {
-            this.$router.push('/products/' + this.title)
+            this.$router.push('/products/' + this.id)
+        },
+        removeItem() {
+          this.$store.dispatch('removeProduct', this.id)
+        },
+        filterItems(cat) {
+          this.$router.push('/products/categories/' + cat)
         }
     }
 }
@@ -61,6 +81,12 @@ export default {
     width: auto;
     padding: 10px;
     margin: 10px;
+  }
+
+  .remove-button {
+    position: relative;
+    right:    -20px;
+    bottom:   -15px;
   }
 
   .product-price {

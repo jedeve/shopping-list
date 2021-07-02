@@ -1,19 +1,31 @@
 <template>
-  <new-product @submit="onSubmitted"></new-product>
+  <base-card>
+    <edit-product
+    :product="{ title: '',
+                url: '',
+                image: '',
+                price: 0,
+                categories: []
+            }"
+    status="Add"
+    @submit="onSubmitted"></edit-product>
+  </base-card>
 </template>
 
 <script>
 import axios from 'axios'
-import NewProduct from '~/components/Products/NewProduct.vue'
+import EditProduct from '~/components/Products/EditProduct.vue'
+import BaseCard from '~/components/UI/BaseCard.vue'
 export default {
-  components: { NewProduct },
+  components: { EditProduct, BaseCard },
     methods: {
         onSubmitted(productData) {
-            axios.post('https://shopping-list-aa6a9-default-rtdb.europe-west1.firebasedatabase.app/products.json', productData)
-            .then(result => console.log(result))
-            .catch(e => console.log(e));
+            this.$store.dispatch('addProduct', productData)
+            .then(() => {
+                this.$router.push('/')
+            })
 
-            this.$router.push('/')
+            
         }
     }
 }
