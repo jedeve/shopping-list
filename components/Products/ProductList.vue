@@ -22,14 +22,7 @@ export default {
       loadedProducts() {
           const products = this.$store.getters.loadedProducts
           if(this.categoryFilter){
-            var parsedProducts = []
-            console.log(this.categoryFilter)
-            for(const product in products) {
-                if(products[product].categories.includes(this.categoryFilter)) {
-                    parsedProducts.push(products[product])
-                }
-            }
-            return parsedProducts
+            return products.filter(product => product.categories.includes(this.categoryFilter))
           } else {
               return products
           }

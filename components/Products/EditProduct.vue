@@ -21,7 +21,7 @@
             </div>
             <div class="form-control">
             <h3>Price</h3>
-            <input id="productPrice" type="number" v-model="product.price">
+            <input id="productPrice" type="number" step="0.01" v-model="product.price">
             </div>
             <div class="form-control">
             <h3>Categories</h3>
@@ -56,11 +56,7 @@ export default {
     },
     computed: {
         exisitingImage() {
-            if(this.product.image) {
-                return true
-            } else {
-                return false
-            }
+          return this.product.image
         },
         exisitingCategories() {
             return this.$store.state.existingCategories

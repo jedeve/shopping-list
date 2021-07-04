@@ -19,8 +19,7 @@ const createStore = () => {
                 state.loadedProducts.push(product)
             },
             removeProduct(state, productId) {
-                const productIndex = state.loadedProducts.findIndex( (productItem) => productItem.id === productId)
-                state.loadedProducts.splice(productIndex, 1)
+                state.loadedProducts = state.loadedProducts.filter(productItem => productItem.id !== productId)
             },
             editProduct(state, productData) {
                 const productIndex = state.loadedProducts.findIndex(
@@ -47,7 +46,7 @@ const createStore = () => {
                         } else {
                             productsArray.push({ ...res.data[key], id: key, categories: []})
                         }
-                        
+
                     }
                     console.log(categoriesArray)
                     vuexContext.commit('setProducts', productsArray)
@@ -93,7 +92,7 @@ const createStore = () => {
                 return state.loadedProducts.find(product => product.id === productId)
             },
             totalPrice(state) {
-                var parsedPrice = 0
+                let parsedPrice = 0
                 for( const product in state.loadedProducts ){
                     console.log(product)
                     parsedPrice = parsedPrice + parseFloat(state.loadedProducts[product].price)

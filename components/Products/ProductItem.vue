@@ -20,7 +20,7 @@
         € {{ price }}
     </div>
     <div class="remove-button">
-      <button @click="removeItem" v-on:click.stop>
+      <button @click="removeItem()">
         Remove
       </button>
     </div>
@@ -56,7 +56,7 @@ export default {
         categories: {
             type: Array,
             required: false
-        } 
+        }
     },
     methods: {
         toProduct() {
