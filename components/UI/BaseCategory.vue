@@ -1,5 +1,5 @@
 <template>
-  <button>
+  <button class="category-button">
       <slot>
       </slot>
   </button>
@@ -11,8 +11,8 @@ export default {
 }
 </script>
 
-<style scoped>
-button {
+<style>
+.category-button {
   border-radius: 8px;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.26);
   padding: 0.3rem;
@@ -21,7 +21,7 @@ button {
   position: relative;
     right:    0px;
     bottom:   -15px;
-    
+
 }
 
 </style>
