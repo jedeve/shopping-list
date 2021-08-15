@@ -20,6 +20,9 @@ export default {
     BaseCard,
     ProductsTotal 
     },
+    created() {
+        return this.$store.dispatch('filterProducts', false)
+    }
 }
 </script>
 <style scoped>

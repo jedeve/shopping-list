@@ -8,6 +8,13 @@
         </div>
         <form @submit.prevent="submitProduct">
             <div class="form-control">
+            <!-- <h3>Categories</h3> -->
+            <input id="include" name="productStatus" type="radio" v-bind:value="true" v-model="product.status">
+            <label for="include">Include</label>
+            <input id="exclude" name="productStatus" type="radio" v-bind:value="false" v-model="product.status">
+            <label for="exclude">Exclude</label>
+            </div>
+            <div class="form-control">
             <h3>Name</h3>
             <input id="productTitle" type="text" v-model="product.title">
             </div>
@@ -24,9 +31,13 @@
             <input id="productPrice" type="number" step="0.01" v-model="product.price">
             </div>
             <div class="form-control">
+            <h3>Quantity</h3>
+            <input id="productQuantity" type="number" step="1" v-model="product.quantity">
+            </div>
+            <div class="form-control">
             <h3>Categories</h3>
             <div v-for="cat in exisitingCategories" :key="cat">
-                <input :id="cat" name="categories" type="checkbox" :value="cat" v-model="categories">
+                <input :id="cat" name="categories" type="checkbox" :value="cat" v-model="product.categories">
                 <label :for="cat">{{ cat }}</label>
             </div>
             <input id="newCategory" type="text" v-model="newCategory" @keydown.enter.prevent="addNewCategory" placeholder="Add new category">
@@ -51,7 +62,6 @@ export default {
     data() {
         return {
             newCategory: "",
-            categories: this.product.categories
         }
     },
     computed: {
@@ -60,11 +70,17 @@ export default {
         },
         exisitingCategories() {
             return this.$store.state.existingCategories
-        }
+        },
     },
     methods: {
         submitProduct() {
-            this.$emit('submit', { ...this.product, categories: this.categories })
+            console.log(this.productStatus)
+            if(this.newCategory != ""){
+                const newCat = this.newCategory
+                this.categories.push(newCat)
+                this.addNewCategory()
+            }
+            this.$emit('submit', this.product)
         },
         pageLeave() {
             this.$router.push('/')
@@ -72,7 +88,7 @@ export default {
         addNewCategory() {
             this.$store.dispatch('addCategory', this.newCategory)
             this.newCategory = ""
-        }
+        },
     }
 }
 </script>

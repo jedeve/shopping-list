@@ -20,6 +20,7 @@ export default {
         url: '',
         image: '',
         price: 0,
+        quantity: 1,
         categories: []
       }
     }

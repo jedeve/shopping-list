@@ -8,8 +8,11 @@
 export default {
     computed: {
         totalPrice() {
-            return this.$store.getters.totalPrice
+            return this.$store.state.totalPrice
         }
+    },
+    created() {
+        this.$store.dispatch('updateTotal')
     }
 }
 </script>

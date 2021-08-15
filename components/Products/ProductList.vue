@@ -1,14 +1,16 @@
 <template>
     <section class="product-list">
         <product-item
-        v-for="product in loadedProducts"
+        v-for="product in products"
         :key="product.id"
         :id="product.id"
         :image="product.image"
         :title="product.title"
         :url="product.url"
         :price="product.price"
+        :quantity="product.quantity"
         :categories="product.categories"
+        :productStatus="product.status"
         ></product-item>
     </section>
 </template>
@@ -17,18 +19,17 @@
 import ProductItem from './ProductItem.vue'
 export default {
   components: { ProductItem },
-  props: ['categoryFilter'],
-  computed: {
-      loadedProducts() {
-          const products = this.$store.getters.loadedProducts
-          if(this.categoryFilter){
-            return products.filter(product => product.categories.includes(this.categoryFilter))
-          } else {
-              return products
-          }
+  data() {
+      return {
+          products: []
       }
   },
-
+  updated() {
+      this.products = this.$store.getters.filteredProducts
+  },
+  created() {
+      this.products = this.$store.getters.filteredProducts
+  }
 }
 </script>
 

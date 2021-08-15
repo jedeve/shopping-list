@@ -1,5 +1,8 @@
 <template>
-  <div class="container">
+  <div
+  :class="{unincluded: !includeStatus}"
+  class="container"
+  >
   <div class="product-image"
   @click="toProduct"
     :style="{backgroundImage: 'url(' + image + ')'}">
@@ -16,9 +19,13 @@
     </base-category>
     </div>
     <div>
+    <div class="include-button">
+      <input id="status" name="include" type="checkbox" :checked="includeStatus" v-model="includeStatus">
+    </div>
     <div class="product-price">
         € {{ price }}
     </div>
+    <input id="productQuantity" class="product-quantity" type="number" step="0" v-model="productQuantity">
     <div class="remove-button">
       <button @click="removeItem()">
         Remove
@@ -53,10 +60,24 @@ export default {
             type: String,
             required: true
         },
+        quantity: {
+            type: String,
+            required: true
+        },
         categories: {
             type: Array,
             required: false
+        },
+        productStatus: {
+          type: Boolean,
+          required: false
         }
+    },
+    data() {
+      return {
+        includeStatus: this.productStatus,
+        productQuantity: this.quantity
+      }
     },
     methods: {
         toProduct() {
@@ -67,8 +88,29 @@ export default {
         },
         filterItems(cat) {
           this.$router.push('/products/categories/' + cat)
+        },
+        saveEdits(){
+          this.$store.dispatch('editProduct', {
+            id: this.id,
+            title: this.title,
+            url: this.url,
+            image: this.image,
+            price: this.price,
+            categories: this.categories,
+            status: this.includeStatus,
+            quantity: this.productQuantity
+          })
         }
-    }
+    },
+    watch: {
+      includeStatus() {
+        this.saveEdits()
+      },
+      productQuantity(){
+        this.saveEdits()
+      }
+    },
+    
 }
 </script>
 
@@ -96,6 +138,14 @@ export default {
 
   }
 
+  .product-quantity {
+    display: flex;
+    font-size: 0.8rem;
+    border: 0px;
+    justify-content: flex-end;
+  }
+  
+
   .product-title {
     font-size: 1.5rem;
   }
@@ -108,5 +158,9 @@ export default {
 
   .product-data {
     flex: 1;
+  }
+
+  .unincluded {
+    opacity: 30%;
   }
 </style>

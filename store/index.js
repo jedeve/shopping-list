@@ -5,7 +5,9 @@ const createStore = () => {
     return new Vuex.Store({
         state: {
             loadedProducts: [],
-            existingCategories: ['kitchen', 'living room'],
+            filteredProducts: [],
+            existingCategories: [],
+            listOfColors: ['#FFBF00', '#FF7F50', '#DE3163', '#9FE2BF', '#40E0D0', '#6495ED', '#CCCCFF'],
             totalPrice: 0
         },
         mutations: {
@@ -19,16 +21,28 @@ const createStore = () => {
                 state.loadedProducts.push(product)
             },
             removeProduct(state, productId) {
-                state.loadedProducts = state.loadedProducts.filter(productItem => productItem.id !== productId)
+                state.filteredProducts = state.filteredProducts.filter(productItem => productItem.id !== productId)
             },
             editProduct(state, productData) {
-                const productIndex = state.loadedProducts.findIndex(
+                const productIndex = state.filteredProducts.findIndex(
                     product => product.id === productData.id
                   );
-                  state.loadedProducts[productIndex] = productData
+                  state.filteredProducts[productIndex] = productData
             },
             addCategory(state, category) {
                 state.existingCategories.push(category)
+            },
+            filterProducts(state, productList){
+                state.filteredProducts = productList
+            },
+            updateTotal(state) {
+                var parsedPrice = 0
+                for( const product in state.filteredProducts ){
+                    if(state.filteredProducts[product].status && state.filteredProducts[product].quantity > 0){
+                        parsedPrice = parsedPrice + parseFloat(state.filteredProducts[product].price * state.filteredProducts[product].quantity )
+                    }
+                }
+                state.totalPrice = parsedPrice
             }
         },
         actions: {
@@ -76,28 +90,35 @@ const createStore = () => {
                 return axios.put('https://shopping-list-aa6a9-default-rtdb.europe-west1.firebasedatabase.app/products/' + productData.id + '.json', productData)
                     .then(result => {
                         vuexContext.commit('editProduct', productData)
+                        vuexContext.commit('updateTotal')
                     })
                     .catch(e => console.log(e));
             },
             addCategory(vuexContext, category) {
                 vuexContext.commit('addCategory', category)
+            },
+            filterProducts(vuexContext, filterValue){
+                if (filterValue) {
+                    var productList = vuexContext.getters.loadedProducts.filter(product => product.categories.includes(filterValue))
+                } else {
+                    var productList = vuexContext.getters.loadedProducts
+                }
+                vuexContext.commit('filterProducts', productList)
+            },
+            updateTotal(vuexContext){
+                vuexContext.commit('updateTotal')
             }
         },
         getters: {
             loadedProducts(state) {
                 return state.loadedProducts
             },
+            filteredProducts(state) {
+                return state.filteredProducts
+            },
             getProduct: (state) => (productId) => {
                 console.log(state.loadedProducts.find(product => product.id === productId))
                 return state.loadedProducts.find(product => product.id === productId)
-            },
-            totalPrice(state) {
-                let parsedPrice = 0
-                for( const product in state.loadedProducts ){
-                    console.log(product)
-                    parsedPrice = parsedPrice + parseFloat(state.loadedProducts[product].price)
-                }
-                return parsedPrice
             },
         },
     })

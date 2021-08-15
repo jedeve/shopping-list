@@ -4,7 +4,7 @@
       <button @click="pageLeave">
         Back
       </button>
-      <product-list :categoryFilter="category"></product-list>
+      <product-list></product-list>
       <nuxt-link to="/products/new-product">Add new product</nuxt-link>
     </base-card>
     <base-card>
@@ -24,10 +24,8 @@ export default {
     BaseCard,
     ProductsTotal
   },
-  computed: {
-    category() {
-      return this.$route.params.category
-    }
+  created() {
+    this.$store.dispatch('filterProducts', this.$route.params.category)
   },
   methods: {
     pageLeave() {
