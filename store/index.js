@@ -8,6 +8,7 @@ const createStore = () => {
             filteredProducts: [],
             existingCategories: [],
             listOfColors: ['#FFBF00', '#FF7F50', '#DE3163', '#9FE2BF', '#40E0D0', '#6495ED', '#CCCCFF'],
+            categoryColors: {},
             totalPrice: 0
         },
         mutations: {
@@ -16,6 +17,11 @@ const createStore = () => {
             },
             setCategories(state, categories) {
                 state.existingCategories = categories
+                let categoryColors = {}
+                state.categoryColors = Array.from(categories).forEach((category, index) => {
+                    categoryColors[category] = state.listOfColors[index]
+                })
+                state.categoryColors = categoryColors
             },
             addProduct(state, product) {
                 state.loadedProducts.push(product)
@@ -99,7 +105,13 @@ const createStore = () => {
             },
             filterProducts(vuexContext, filterValue){
                 if (filterValue) {
-                    var productList = vuexContext.getters.loadedProducts.filter(product => product.categories.includes(filterValue))
+                    var productList = vuexContext.getters.loadedProducts.filter(product => {
+                        var categories = product.categories.map(category => {
+                            return category.toLowerCase()
+                        })
+                        return categories.includes(filterValue.toLowerCase())
+                        
+                    })
                 } else {
                     var productList = vuexContext.getters.loadedProducts
                 }

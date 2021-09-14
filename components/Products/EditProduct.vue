@@ -3,7 +3,6 @@
         <button @click="pageLeave">
             Back
         </button>
-        <h1>{{ status }} Product</h1>
         <div v-if="exisitingImage" class="product-image" :style="{backgroundImage: 'url(' + product.image + ')'}">
         </div>
         <form @submit.prevent="submitProduct">
@@ -77,7 +76,7 @@ export default {
             console.log(this.productStatus)
             if(this.newCategory != ""){
                 const newCat = this.newCategory
-                this.categories.push(newCat)
+                // this.exisitingCategories.push(newCat)
                 this.addNewCategory()
             }
             this.$emit('submit', this.product)

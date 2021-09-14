@@ -1,5 +1,6 @@
 <template>
 <div>
+  <h1>All Products</h1>
   <base-card class="main">
     <product-list></product-list>
     <nuxt-link to="/products/new-product">Add new product</nuxt-link>

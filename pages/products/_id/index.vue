@@ -1,11 +1,14 @@
 <template>
-<base-card>
-  <edit-product
-  :product="product"
-  status="Edit"
-  @submit="editProduct">
-  </edit-product>
-</base-card>
+<div>
+  <h1>Edit Product</h1>
+  <base-card>
+    <edit-product
+    :product="product"
+    status="Edit"
+    @submit="editProduct">
+    </edit-product>
+  </base-card>
+</div>
 </template>
 
 <script>

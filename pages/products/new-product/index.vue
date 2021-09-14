@@ -1,10 +1,13 @@
 <template>
-  <base-card>
-    <edit-product
-      :product="product"
-      status="Add"
-      @submit="onSubmitted"></edit-product>
-  </base-card>
+<div>
+  <h1>New Product</h1>
+    <base-card>
+      <edit-product
+        :product="product"
+        status="Add"
+        @submit="onSubmitted"></edit-product>
+    </base-card>
+</div>
 </template>
 
 <script>

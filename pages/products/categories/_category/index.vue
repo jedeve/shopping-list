@@ -1,5 +1,6 @@
 <template>
   <div>
+    <h1>{{ category }}</h1>
     <base-card class="main">
       <button @click="pageLeave">
         Back
@@ -31,6 +32,11 @@ export default {
     pageLeave() {
       this.$router.push('/')
     },
+  },
+  computed: {
+    category() {
+      return this.$route.params.category
+    }
   }
 }
 </script>

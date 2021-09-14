@@ -5,20 +5,22 @@
   >
   <div class="product-image"
   @click="toProduct"
-    :style="{backgroundImage: 'url(' + image + ')'}">
-    </div>
+  :style="{backgroundImage: 'url(' + image + ')'}">
+  </div>
+
   <div class="product-data">
     <div class="product-title" @click="toProduct">
         {{ title }}
     </div>
     <div class="product-url">
-        <a :href="url" v-on:click.stop target="_blank">Go to product</a>
+        <a :href="url" v-on:click.stop target="_blank">{{ parsedUrl }}</a>
     </div>
-    <base-category v-for="cat in categories" :key="cat" @click.native="filterItems(cat)" v-on:click.stop>
+    <base-category v-for="cat in categories" :key="cat" :style="'background-color: ' + colors[cat]" @click.native="filterItems(cat)" v-on:click.stop>
         {{ cat }}
     </base-category>
-    </div>
-    <div>
+  </div>
+
+  <div class="product-settings">
     <div class="include-button">
       <input id="status" name="include" type="checkbox" :checked="includeStatus" v-model="includeStatus">
     </div>
@@ -31,7 +33,8 @@
         Remove
       </button>
     </div>
-    </div>
+  </div>
+
 </div>
 </template>
 
@@ -110,6 +113,32 @@ export default {
         this.saveEdits()
       }
     },
+    computed: {
+      parsedUrl() {
+        var url = this.url
+        var domain;
+        //find & remove protocol (http, ftp, etc.) and get domain
+        if (url.indexOf("://") > -1) {
+          domain = url.split('/')[2];
+        }
+        else {
+          domain = url.split('/')[0];
+        }
+        
+        //find & remove www
+        if (domain.indexOf("www.") > -1) { 
+          domain = domain.split('www.')[1];
+        }
+        
+        domain = domain.split(':')[0]; //find & remove port number
+        domain = domain.split('?')[0]; //find & remove url params
+
+        return domain;
+      },
+      colors() {
+        return this.$store.state.categoryColors
+      }
+    }
     
 }
 </script>
@@ -125,24 +154,16 @@ export default {
     margin: 10px;
   }
 
-  .remove-button {
-    position: relative;
-    right:    -20px;
-    bottom:   -15px;
-  }
+
 
   .product-price {
-    display: flex;
     font-size: 1.5rem;
-    justify-content: flex-end;
 
   }
 
   .product-quantity {
-    display: flex;
     font-size: 0.8rem;
     border: 0px;
-    justify-content: flex-end;
   }
   
 
@@ -151,13 +172,21 @@ export default {
   }
 
   .product-image {
-    width: 25%;
-    background-size: contain;
-    background-repeat: no-repeat;
+    background: no-repeat center center/cover;
+    border-radius: 7px;
+    flex: 1;
+    margin-right: 10px;
   }
 
   .product-data {
-    flex: 1;
+    flex: 3.5;
+  }
+
+  .product-settings {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    justify-content: center space-between;
   }
 
   .unincluded {
